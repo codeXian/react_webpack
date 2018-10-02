@@ -1,0 +1,10 @@
+{
+  "name": "react_webpack",
+  "version": "0.0.1",
+  "description": "use webpack4 for react app",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": ["react", "webpack4"],
+  "author": "codexian",
+  "license": "MIT"
+}
