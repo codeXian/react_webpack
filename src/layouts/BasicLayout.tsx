@@ -3,17 +3,18 @@ import { hot } from 'react-hot-loader';
 import './BasicLayout.css';
 import boren from '../assets/boren.jpeg';
 import Test from '../components/Test';
+import { add } from '../utils/math';
 
 export interface IBasicLayout {}
 
 class BasicLayout extends React.PureComponent {
   public componentDidMount() {
-    console.log(this.props);
+    console.log(add(1, 2));
   }
   public render() {
     return (
       <div className="basic-layout">
-        BasicLayout123
+        BasicLayout123666
         <img src={boren} alt="博人" />
         <div className="flower" />
         <Test title="798" />
