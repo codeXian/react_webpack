@@ -9,8 +9,13 @@
       "es2015",
       "dom"
     ],
+    "experimentalDecorators": true,
     "allowJs": true, // 包含js文件
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["./src/components/*"]
+    }
   },
   "exclude": [
     "node_modules"

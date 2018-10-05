@@ -6,10 +6,15 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
+const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map',
+  // devtool: 'source-map',
+  output: {
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(__dirname, 'dist'),
+  },
   module: {
     rules: [
       {
@@ -32,34 +37,39 @@ module.exports = merge(common, {
               ['@babel/plugin-proposal-decorators', { legacy: true }],
               ['@babel/plugin-proposal-class-properties', { loose: true }],
               '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-transform-runtime',
             ],
           },
         },
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        include: path.join(__dirname, './src'),
+        use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.html$/,
+        test: /\.s(a|c)ss$/,
+        include: path.join(__dirname, './src'),
         use: [
+          MiniCssExtractPlugin.loader,
           {
-            loader: 'html-loader',
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              modules: true,
+              namedExport: true,
+              camelCase: true,
+              sass: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [path.join(__dirname, './src/styles')],
+            },
           },
         ],
       },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/,
-        use: ['file-loader'],
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader'],
-      },
     ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   optimization: {
     minimizer: [
@@ -73,12 +83,13 @@ module.exports = merge(common, {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
+    new HashedModuleIdsPlugin(),
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css',
     }),
   ],
 });

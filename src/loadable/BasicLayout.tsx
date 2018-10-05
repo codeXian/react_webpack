@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
-import Loading from '../components/Loading';
+import Loading from '@components/Loading';
 
 const BasicLayoutComponent = Loadable({
   loader: () => import('../layouts/BasicLayout'),

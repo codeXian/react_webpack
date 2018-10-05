@@ -1,0 +1,11 @@
+@import 'var.scss';
+
+.wrapper {
+  color: $red;
+  width: 50px;
+  @include ellipsis;
+
+  .title {
+    font-size: 20px;
+  }
+}

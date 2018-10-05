@@ -1,7 +1,20 @@
 import * as React from 'react';
+import * as styles from './BlockLayout.scss';
 
-export default class BlockLayout extends React.PureComponent {
+@log
+class BlockLayout extends React.PureComponent {
   public render() {
-    return <div>空白页面</div>;
+    return (
+      <div className={styles.wrapper}>
+        内容1111111111111111111111111
+        <div className={styles.title}>标题</div>
+      </div>
+    );
   }
 }
+
+function log(target: any) {
+  console.log(target);
+}
+
+export default BlockLayout;
