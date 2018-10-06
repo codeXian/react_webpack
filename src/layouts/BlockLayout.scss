@@ -1,9 +1,9 @@
 @import 'var.scss';
 
 .wrapper {
+  @include ellipsis;
   color: $red;
   width: 50px;
-  @include ellipsis;
 
   .title {
     font-size: 20px;

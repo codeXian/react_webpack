@@ -3,14 +3,18 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
+  output: {
+    filename: '[name].js',
+  },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, './dist'),
     compress: true, // 一切服务启用gzip压缩
+    clientLogLevel: 'none',
     hot: true,
     open: true,
     historyApiFallback: true,
@@ -18,35 +22,78 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.(j|t)sx?$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            babelrc: false,
-            presets: [
-              [
-                '@babel/preset-env',
-                { targets: { browsers: 'last 2 versions' } },
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              babelrc: false,
+              presets: [
+                [
+                  '@babel/preset-env',
+                  { targets: { browsers: 'last 2 versions' } },
+                ],
+                '@babel/preset-typescript',
+                '@babel/preset-react',
               ],
-              '@babel/preset-typescript',
-              '@babel/preset-react',
-            ],
-            plugins: [
-              ['@babel/plugin-proposal-decorators', { legacy: true }],
-              ['@babel/plugin-proposal-class-properties', { loose: true }],
-              '@babel/plugin-syntax-dynamic-import',
-              '@babel/plugin-transform-runtime',
-              'react-hot-loader/babel',
-            ],
+              plugins: [
+                ['@babel/plugin-proposal-decorators', { legacy: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: true }],
+                '@babel/plugin-syntax-dynamic-import',
+                '@babel/plugin-transform-runtime',
+                'react-hot-loader/babel',
+              ],
+            },
           },
-        },
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              transpileOnly: true,
+              useCache: true,
+              cacheDirectory: path.join(__dirname, './.cache-loader'),
+              getCustomTransformers: () => ({
+                before: [
+                  tsImportPluginFactory({
+                    libraryName: 'antd',
+                    libraryDirectory: 'lib',
+                    style: true,
+                  }),
+                ],
+              }),
+              babelOptions: {
+                babelrc: false,
+                plugins: ['react-hot-loader/babel'],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
         include: path.join(__dirname, './src'),
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.less$/,
+        include: path.join(__dirname, './node_modules'),
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+              modifyVars: require('./theme'),
+            },
+          },
+        ],
       },
       {
         test: /\.s(a|c)ss$/,
@@ -78,9 +125,5 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new HotModuleReplacementPlugin(),
-    new NamedModulesPlugin(),
-  ],
+  plugins: [new HotModuleReplacementPlugin(), new NamedModulesPlugin()],
 });

@@ -5,7 +5,7 @@
 .flower {
   width: 200px;
   height: 200px;
-  background: url(../assets/test.png) no-repeat center center;
+  background: url(~assets/test.png) no-repeat center center;
 }
 
 .test {

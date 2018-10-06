@@ -1,9 +1,16 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
+  entry: {
+    app: path.join(__dirname, './src/index.tsx'),
+  },
+  output: {
+    path: path.join(__dirname, './dist'),
+  },
   module: {
     rules: [
       {
@@ -15,8 +22,20 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/,
-        use: ['file-loader'],
+        test: /\.(png|jpg|jpeg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+        include: path.join(__dirname, './src'),
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -26,24 +45,14 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    alias: {
-      '@components': path.resolve(__dirname, './src/components'),
-    },
-  },
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.join(__dirname, './tsconfig.json'),
+      }),
+    ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin([path.join(__dirname, './dist')]),
     new HtmlWebPackPlugin({
       template: './src/index.html',
     }),

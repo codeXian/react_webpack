@@ -1,4 +1,10 @@
-declare module '*.svg';
+declare interface SvgrComponent
+  extends React.StatelessComponent<React.SVGAttributes<SVGAElement>> {}
+
+declare module '*.svg' {
+  const content: SvgrComponent;
+  export default content;
+}
 declare module '*.png';
 declare module '*.jpg';
 declare module '*.jpeg';

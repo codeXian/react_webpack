@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from 'react'
 
 export interface ITestProps {
-  title: string;
+  title: string
 }
 
 export default class Test extends React.PureComponent<ITestProps, any> {
@@ -11,6 +11,6 @@ export default class Test extends React.PureComponent<ITestProps, any> {
         {this.props.title}
         123
       </div>
-    );
+    )
   }
 }
