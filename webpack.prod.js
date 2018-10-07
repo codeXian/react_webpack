@@ -5,9 +5,9 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const DefinePlugin = require('webpack/lib/DefinePlugin')
 const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin')
 const tsImportPluginFactory = require('ts-import-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -140,32 +140,30 @@ module.exports = merge(common, {
     runtimeChunk: {
       name: 'manifest',
     },
-    namedChunks: true,
+    // namedChunks: true,
     splitChunks: {
-      minSize: 30000,
       cacheGroups: {
         commons: {
           chunks: 'initial',
-          name: 'commons',
+          //   name: 'commons',
           minChunks: 2,
           maxInitialRequests: 5,
           minSize: 0,
-          priority: 0,
+          //   priority: 0,
         },
-        antd: {
+        'vendor-antd': {
           chunks: 'initial',
-          test: /node_modules\/antd/,
-          name: 'antd',
-          priority: -9,
+          test: /antd/,
+          name: 'vendor-antd',
           enforce: true,
         },
-        vendor: {
-          chunks: 'initial',
-          test: /node_modules/,
-          name: 'vendor',
-          priority: -10,
-          enforce: true,
-        },
+        // vendor: {
+        //   chunks: 'initial',
+        //   test: /node_modules/,
+        //   name: 'vendor',
+        //   priority: -10,
+        //   enforce: true,
+        // },
       },
     },
     minimizer: [
@@ -193,11 +191,11 @@ module.exports = merge(common, {
       },
     }),
     new HashedModuleIdsPlugin(),
-    new DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash].css',
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerPort: 8888,
     }),
   ],
 })

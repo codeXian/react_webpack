@@ -1,7 +1,6 @@
 const path = require('path')
 const merge = require('webpack-merge')
 const common = require('./webpack.common')
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin')
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
 const tsImportPluginFactory = require('ts-import-plugin')
 
@@ -125,5 +124,5 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [new HotModuleReplacementPlugin(), new NamedModulesPlugin()],
+  plugins: [new HotModuleReplacementPlugin()],
 })

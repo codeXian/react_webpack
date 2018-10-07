@@ -43,6 +43,10 @@ module.exports = {
       },
     ],
   },
+  externals: {
+    react: 'window.React',
+    'react-dom': 'window.ReactDOM',
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
     plugins: [
