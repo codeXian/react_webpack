@@ -11,22 +11,22 @@ export interface IBasicLayout {}
 
 @hot(module)
 class BasicLayout extends React.PureComponent {
-    public componentDidMount() {
-        console.log(add(1, 2))
-        console.log(functest('1', '44'))
-    }
-    public render() {
-        return (
-            <div className="basic-layout">
-                Basic123777o999900001000
-                <img src={boren} alt="博人" />
-                <div className="flower" />
-                <Test title="798" />
-                <TestAntdButton />
-                <Counter />
-            </div>
-        )
-    }
+  public componentDidMount() {
+    console.log(add(1, 2))
+    console.log(functest('1', '44'))
+  }
+  public render() {
+    return (
+      <div className="basic-layout">
+        Basic123777o999900001000
+        <img src={boren} alt="博人" />
+        <div className="flower" />
+        <Test title="798" />
+        <TestAntdButton />
+        <Counter />
+      </div>
+    )
+  }
 }
 
 export default BasicLayout

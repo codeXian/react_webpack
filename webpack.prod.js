@@ -1,13 +1,13 @@
-const path = require('path');
-const merge = require('webpack-merge');
-const common = require('./webpack.common');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin');
-const tsImportPluginFactory = require('ts-import-plugin');
+const path = require('path')
+const merge = require('webpack-merge')
+const common = require('./webpack.common')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const DefinePlugin = require('webpack/lib/DefinePlugin')
+const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin')
+const tsImportPluginFactory = require('ts-import-plugin')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -29,7 +29,11 @@ module.exports = merge(common, {
               presets: [
                 [
                   '@babel/preset-env',
-                  { targets: { browsers: 'last 2 versions' } },
+                  {
+                    targets: {
+                      browsers: 'last 2 versions',
+                    },
+                  },
                 ],
                 '@babel/preset-typescript',
                 '@babel/preset-react',
@@ -136,13 +140,31 @@ module.exports = merge(common, {
     runtimeChunk: {
       name: 'manifest',
     },
+    namedChunks: true,
     splitChunks: {
+      minSize: 30000,
       cacheGroups: {
-        default: false,
         commons: {
-          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial',
+          name: 'commons',
+          minChunks: 2,
+          maxInitialRequests: 5,
+          minSize: 0,
+          priority: 0,
+        },
+        antd: {
+          chunks: 'initial',
+          test: /node_modules\/antd/,
+          name: 'antd',
+          priority: -9,
+          enforce: true,
+        },
+        vendor: {
+          chunks: 'initial',
+          test: /node_modules/,
           name: 'vendor',
-          chunks: 'all',
+          priority: -10,
+          enforce: true,
         },
       },
     },
@@ -178,4 +200,4 @@ module.exports = merge(common, {
       filename: 'css/[name].[hash].css',
     }),
   ],
-});
+})

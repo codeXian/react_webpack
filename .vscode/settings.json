@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
   "prettier.stylelintIntegration": true,
-  "prettier.tabWidth": 4,
+  "prettier.tabWidth": 2,
   "prettier.singleQuote": true,
   "prettier.semi": false,
   "files.insertFinalNewline": true,

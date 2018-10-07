@@ -9,8 +9,8 @@ import App from '@shared/App'
 configure({ enforceActions: 'observed' })
 
 ReactDOM.render(
-    <Provider {...store}>
-        <App />
-    </Provider>,
-    document.getElementById('root') as HTMLElement,
+  <Provider {...store}>
+    <App />
+  </Provider>,
+  document.getElementById('root') as HTMLElement,
 )

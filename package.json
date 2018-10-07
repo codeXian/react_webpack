@@ -64,7 +64,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "antd": "^3.10.0",
+    "antd": "^3.8.4",
     "mobx": "^5.5.0",
     "mobx-react": "^5.2.8",
     "react": "^16.5.2",
