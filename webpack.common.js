@@ -47,6 +47,7 @@ module.exports = {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
     jquery: 'jQuery',
+    lodash: 'window._',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
