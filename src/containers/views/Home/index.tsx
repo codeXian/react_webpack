@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Test from './Test';
+import Test from './Test'
 
 const ListItem: React.SFC<any> = () => (
   <>
@@ -9,8 +9,8 @@ const ListItem: React.SFC<any> = () => (
 )
 
 class Home extends React.Component {
-  private myRef = React.createRef<HTMLDivElement>();
-  private myRefTest = React.createRef<Test>();
+  private myRef = React.createRef<HTMLDivElement>()
+  private myRefTest = React.createRef<Test>()
   componentDidMount() {
     console.log(this.myRefTest.current.test)
   }
