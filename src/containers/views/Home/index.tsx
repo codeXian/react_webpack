@@ -1,20 +1,25 @@
 import * as React from 'react'
-import { ComponentExt } from '@utils/reactExt'
-import { Button } from 'antd'
-import $ from 'jquery'
-import LodashStudy from '@components/LodashStudy'
+import Test from './Test';
 
-class Home extends ComponentExt {
+const ListItem: React.SFC<any> = () => (
+  <>
+    <dt>我是dt1</dt>
+    <dd>我是dd</dd>
+  </>
+)
+
+class Home extends React.Component {
+  private myRef = React.createRef<HTMLDivElement>();
+  private myRefTest = React.createRef<Test>();
   componentDidMount() {
-    console.log($('#button').width())
+    console.log(this.myRefTest.current.test)
   }
-  render() {
+  public render() {
     return (
       <div>
-        <Button id="button">123</Button>
-        <div>
-          <LodashStudy />
-        </div>
+        <ListItem />
+        <div ref={this.myRef} id="123" >132</div>
+        <Test ref={this.myRefTest} />
       </div>
     )
   }
